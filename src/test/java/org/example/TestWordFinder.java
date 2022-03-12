@@ -12,9 +12,10 @@ import org.testng.annotations.Test;
 @Test
 public class TestWordFinder {
 
+    private final WordFinder wordFinder = new WordFinder();
+
     @Test
     public void testLoadDictionary() {
-        WordFinder wordFinder = new WordFinder(List.of('a', 'b'), "__d");
         assertEquals(WordFinder.fullWordList.size(), 372968);
         assertTrue(WordFinder.fullWordList.contains("bad"));
 
@@ -25,9 +26,9 @@ public class TestWordFinder {
 
     @Test
     public void testSimpleCase() {
-        WordFinder wordFinder = new WordFinder(List.of('a', 'b'), "__d");
+        WordFinder wordFinder = new WordFinder();
 
-        List<String> results = wordFinder.findCandidates();
+        List<String> results = wordFinder.findCandidates(List.of('a', 'b'), "__d");
         assertEquals(results.size(), 2);
         assertTrue(results.contains("bad"));
         assertTrue(results.contains("abd"));
@@ -35,13 +36,11 @@ public class TestWordFinder {
 
     @Test
     public void testWordle() {
-        String candidates = "qweyuofghjkzxvb";
+        WordFinder wordFinder = new WordFinder();
 
-        WordFinder wordFinder = new WordFinder(
-            candidates.chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
-            "_ou_e");
-
-        List<String> results = wordFinder.findCandidates();
+        List<String> results = wordFinder.findCandidates(
+                "qweyuofghjkzxvb".chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
+                "_ou_e");
 
         assertFalse(results.isEmpty());
 
@@ -52,13 +51,10 @@ public class TestWordFinder {
 
     @Test
     public void testWordle137() {
-        String candidates = "qwrtypasghjklzxcvbnm";
 
-        WordFinder wordFinder = new WordFinder(
-            candidates.chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
-            "a_t_r");
-
-        List<String> results = wordFinder.findCandidates();
+        List<String> results = wordFinder.findCandidates(
+                "qwrtypasghjklzxcvbnm".chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
+                "a_t_r");
 
         assertFalse(results.isEmpty());
 
@@ -69,13 +65,9 @@ public class TestWordFinder {
 
     @Test
     public void testWordle138() {
-        String candidates = "qwryupfghjklzxcvbm";
-
-        WordFinder wordFinder = new WordFinder(
-            candidates.chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
-            "_ul_y");
-
-        List<String> results = wordFinder.findCandidates();
+        List<String> results = wordFinder.findCandidates(
+                "qwryupfghjklzxcvbm".chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
+                "_ul_y");
 
         assertFalse(results.isEmpty());
 
@@ -87,13 +79,37 @@ public class TestWordFinder {
 
     @Test
     public void testWordle140() {
-        String candidates = "qwetyopasfgjkzxcvnm";
+        List<String> results = wordFinder.findCandidates(
+                "qwetyopasfgjkzxcvnm".chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
+                "_oast");
 
-        WordFinder wordFinder = new WordFinder(
-            candidates.chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
-            "_oast");
+        assertFalse(results.isEmpty());
 
-        List<String> results = wordFinder.findCandidates();
+        System.out.printf("There are %d results\n", results.size());
+        for (String result : results) {
+            System.out.println(result);
+        }
+    }
+
+    @Test
+    public void testWordle142() {
+        List<String> results = wordFinder.findCandidates(
+                "qwertyiopfghjkzxcvnm".chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
+                "_roi_");
+
+        assertFalse(results.isEmpty());
+
+        System.out.printf("There are %d results\n", results.size());
+        for (String result : results) {
+            System.out.println(result);
+        }
+    }
+
+    @Test
+    public void testWordle143() {
+        List<String> results = wordFinder.findCandidates(
+                "qweryifghjklzxcvbnm".chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
+                "_i_e_");
 
         assertFalse(results.isEmpty());
 
@@ -105,13 +121,9 @@ public class TestWordFinder {
 
     @Test
     public void testWorldAtch() {
-        String candidates = "qwrtypafhjkzxcvm";
-
-        WordFinder wordFinder = new WordFinder(
-            candidates.chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
-            "_atch");
-
-        List<String> results = wordFinder.findCandidates();
+        List<String> results = wordFinder.findCandidates(
+                "qwrtypafhjkzxcvm".chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
+                "_atch");
 
         assertFalse(results.isEmpty());
 
@@ -121,16 +133,25 @@ public class TestWordFinder {
         }
     }
 
+    @Test
+    public void testWorldScratch() {
+        List<String> results = wordFinder.findCandidates(
+                "qweryuopfgjklzxcvm".chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
+                "_o_u_");
+
+        assertFalse(results.isEmpty());
+
+        System.out.printf("There are %d results\n", results.size());
+        for (String result : results) {
+            System.out.println(result);
+        }
+    }
 
     @Test
     public void testWorldHomeworkCandidate() {
-        String candidates = "qwertypafghjklzxcvbn";
-
-        WordFinder wordFinder = new WordFinder(
-            candidates.chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
-            "_rea_");
-
-        List<String> results = wordFinder.findCandidates();
+        List<String> results = wordFinder.findCandidates(
+                "qwertypafghjklzxcvbn".chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
+                "_rea_");
 
         assertFalse(results.isEmpty());
 
@@ -142,14 +163,11 @@ public class TestWordFinder {
 
     @Test
     public void testWordleSolved() {
-        String candidates = "qwryupfghjklzxcvbm";
         String answer = "puppy";
 
-        WordFinder wordFinder = new WordFinder(
-            candidates.chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
-            answer);
-
-        List<String> results = wordFinder.findCandidates();
+        List<String> results = wordFinder.findCandidates(
+                "qwryupfghjklzxcvbm".chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
+                answer);
 
         assertEquals(results, List.of(answer));
     }
@@ -157,14 +175,10 @@ public class TestWordFinder {
     @Test
     public void testBigWerds() {
         final String answer = "decussate";
-        String candidates = "qwyuofghjdkzxvb";
-        String template = "_ec_ssate";
 
-        WordFinder wordFinder = new WordFinder(
-            candidates.chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
-            template);
-
-        List<String> results = wordFinder.findCandidates();
+        List<String> results = wordFinder.findCandidates(
+                "qwyuofghjdkzxvb".chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
+                "_ec_ssate");
 
         assertTrue(results.contains(answer));
     }
@@ -174,11 +188,9 @@ public class TestWordFinder {
         String candidates = "abcdefghijklmnopqrstuvwxyz";
         String template = "___";
 
-        WordFinder wordFinder = new WordFinder(
-            candidates.chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
-            template);
-
-        List<String> results = wordFinder.findCandidates();
+        List<String> results = wordFinder.findCandidates(
+                candidates.chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
+                template);
 
         assertFalse(results.isEmpty());
     }
@@ -190,13 +202,13 @@ public class TestWordFinder {
         Stopwatch timeIt = Stopwatch.createStarted();
         String candidates = "qweyuofghjkzxvb";
 
-        WordFinder wordFinder = new WordFinder(
-            candidates.chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
-            "_ou_e");
 
         for (int i = 0; i < COUNT; i++) {
-            wordFinder.findCandidates();
+            wordFinder.findCandidates(
+                    candidates.chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
+                    "_ou_e");
         }
+
         System.out.printf("That took %d ms\n", timeIt.elapsed().toMillis());
     }
 }

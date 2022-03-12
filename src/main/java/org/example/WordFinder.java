@@ -16,21 +16,16 @@ import org.apache.commons.io.IOUtils;
 
 public class WordFinder {
 
-    final List<Character> candidateCharacters;
-    final String template;
     final static Set<String> fullWordList = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 
     static {
         fullWordList.addAll(Arrays.asList(loadResource("dictionary", "english_words_full.txt").split("\n")));
     }
 
-
-    public WordFinder(List<Character> candidatesCharacters, String template) {
-        this.candidateCharacters = candidatesCharacters;
-        this.template = template;
+    public WordFinder() {
     }
 
-    public List<String> findCandidates() {
+    public List<String> findCandidates(List<Character> candidateCharacters, String template) {
         Queue<Character> templateLetters = new ArrayDeque<>(
             template.chars().mapToObj(e -> (char) e).collect(Collectors.toList()));
         Queue<Character> candidateQueue = new ArrayDeque<>(candidateCharacters);
