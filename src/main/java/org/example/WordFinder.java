@@ -10,7 +10,7 @@ import org.apache.commons.io.IOUtils;
 
 public class WordFinder {
 
-    final static Set<String> fullWordList = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+    final static TreeSet<String> fullWordList = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 
     static {
         fullWordList.addAll(Arrays.asList(loadResource("dictionary", "english_words_full.txt").split("\n")));
@@ -51,17 +51,27 @@ public class WordFinder {
                 newCandidate.append(c);
 
                 // Check prefix
-
-
-                fillAndCheck(candidateQueue, nextTemplate, newCandidate, results);
+                if (checkPrefix(newCandidate.toString())) {
+                    fillAndCheck(candidateQueue, nextTemplate, newCandidate, results);
+                }
             }
         } else {
             candidate.append(templateChar);
 
-            // Check prefix
-
-            fillAndCheck(candidateQueue, nextTemplate, new StringBuilder(candidate.toString()), results);
+            if (checkPrefix(candidate.toString())) {
+                fillAndCheck(candidateQueue, nextTemplate, new StringBuilder(candidate.toString()), results);
+            }
         }
+    }
+
+    private boolean checkPrefix(String candidate) {
+        String ceiling = fullWordList.ceiling(candidate);
+
+        if (ceiling == null) {
+            return false;
+        }
+
+        return ceiling.startsWith(candidate);
     }
 
     private static String loadResource(String directoryPrefix, String fileName) {

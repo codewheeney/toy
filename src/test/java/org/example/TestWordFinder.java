@@ -6,6 +6,7 @@ import static org.testng.Assert.assertTrue;
 
 import com.google.common.base.Stopwatch;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.testng.annotations.Test;
 
@@ -184,15 +185,24 @@ public class TestWordFinder {
     }
 
     @Test
-    public void testAllThreeLetterWords() {
+    public void testAllWords() {
         String candidates = "abcdefghijklmnopqrstuvwxyz";
-        String template = "___";
+        String template = "_";
+        int maxLen = 6;
 
-        List<String> results = wordFinder.findCandidates(
-                candidates.chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
-                template);
+        for(int i = 0; i < maxLen; i++) {
+            Stopwatch stopwatch = Stopwatch.createStarted();
+            List<String> results = wordFinder.findCandidates(
+                    candidates.chars().mapToObj(e -> (char) e).collect(Collectors.toList()),
+                    template);
+            stopwatch.stop();
 
-        assertFalse(results.isEmpty());
+            System.out.printf("Length = %d, %d ms\n", template.length(), stopwatch.elapsed(TimeUnit.MILLISECONDS));
+
+            assertFalse(results.isEmpty());
+
+            template = template + "_";
+        }
     }
 
     static final int COUNT = 1000;
