@@ -22,7 +22,8 @@ public class WordFinder {
     public List<String> findCandidates(List<Character> candidateCharacters, String template) {
         Queue<Character> templateLetters = new ArrayDeque<>(
             template.toLowerCase(Locale.ROOT).chars().mapToObj(e -> (char) e).collect(Collectors.toList()));
-        Queue<Character> candidateQueue = new ArrayDeque<>(candidateCharacters);
+        Queue<Character> candidateQueue = new ArrayDeque<>(
+                candidateCharacters.stream().map(Character::toLowerCase).collect(Collectors.toList()));
 
         StringBuilder candidate = new StringBuilder();
         List<String> results = new ArrayList<>();

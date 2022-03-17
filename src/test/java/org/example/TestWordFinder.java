@@ -188,7 +188,7 @@ public class TestWordFinder {
     public void testAllWords() {
         String candidates = "abcdefghijklmnopqrstuvwxyz";
         String template = "_";
-        int maxLen = 6;
+        int maxLen = 7;
 
         for(int i = 0; i < maxLen; i++) {
             Stopwatch stopwatch = Stopwatch.createStarted();
