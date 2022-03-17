@@ -4,13 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.apache.commons.io.IOUtils;
 
@@ -27,7 +21,7 @@ public class WordFinder {
 
     public List<String> findCandidates(List<Character> candidateCharacters, String template) {
         Queue<Character> templateLetters = new ArrayDeque<>(
-            template.chars().mapToObj(e -> (char) e).collect(Collectors.toList()));
+            template.toLowerCase(Locale.ROOT).chars().mapToObj(e -> (char) e).collect(Collectors.toList()));
         Queue<Character> candidateQueue = new ArrayDeque<>(candidateCharacters);
 
         StringBuilder candidate = new StringBuilder();
@@ -56,10 +50,15 @@ public class WordFinder {
                 StringBuilder newCandidate = new StringBuilder(candidate.toString());
                 newCandidate.append(c);
 
+                // Check prefix
+
+
                 fillAndCheck(candidateQueue, nextTemplate, newCandidate, results);
             }
         } else {
             candidate.append(templateChar);
+
+            // Check prefix
 
             fillAndCheck(candidateQueue, nextTemplate, new StringBuilder(candidate.toString()), results);
         }
